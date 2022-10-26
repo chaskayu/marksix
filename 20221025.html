@@ -72,15 +72,12 @@
 }
 </style>
 
-<div class="drawing-table" id="drawing-table">
-
-</div>
+<div class="drawing-table" id="drawing-table"></div>
 
 <script>
     fetch('https://raw.githubusercontent.com/chaskayu/marksix/main/20221025.json', )
     .then((response) => response.json())
     .then((data) => {
-
         var html = ``;
         // draw table
         data.forEach((draw) => {
@@ -93,7 +90,6 @@
             </div>`;
         });
         document.getElementById('drawing-table').innerHTML = html;
-        
         // fill results
         data.forEach((draw) => {
             const nums = draw.no.split('+');
@@ -102,7 +98,6 @@
             });
             document.querySelector(`.row.draw[data-id="${draw.id}"] .col.num[data-num="${draw.sno}"]`).classList.add('win', 'sno');
         });
-
     });
 </script>
 

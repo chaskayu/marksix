@@ -1,0 +1,94 @@
+<style>
+.drawing-table {
+    display: inline-block;
+    font-size: 8px;
+}
+.drawing-table .row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1px;
+}
+.drawing-table .row .col.num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 10px;
+    text-align: center;
+    background-color: #eee;
+}
+.drawing-table .row .col.ball {
+    width: 0.6px;
+    height: 10px;
+    opacity: 0.4;
+    background-color:rgb(237, 160, 160);
+}
+.drawing-table .row[data-num="3"] .ball,
+.drawing-table .row[data-num="4"] .ball,
+.drawing-table .row[data-num="9"] .ball,
+.drawing-table .row[data-num="10"] .ball,
+.drawing-table .row[data-num="14"] .ball,
+.drawing-table .row[data-num="15"] .ball,
+.drawing-table .row[data-num="20"] .ball,
+.drawing-table .row[data-num="25"] .ball,
+.drawing-table .row[data-num="26"] .ball,
+.drawing-table .row[data-num="31"] .ball,
+.drawing-table .row[data-num="36"] .ball,
+.drawing-table .row[data-num="37"] .ball,
+.drawing-table .row[data-num="41"] .ball,
+.drawing-table .row[data-num="42"] .ball,
+.drawing-table .row[data-num="47"] .ball,
+.drawing-table .row[data-num="48"] .ball {
+    background-color: rgb(144, 193, 238);
+}
+.drawing-table .row[data-num="5"] .ball,
+.drawing-table .row[data-num="6"] .ball,
+.drawing-table .row[data-num="11"] .ball,
+.drawing-table .row[data-num="16"] .ball,
+.drawing-table .row[data-num="17"] .ball,
+.drawing-table .row[data-num="21"] .ball,
+.drawing-table .row[data-num="22"] .ball,
+.drawing-table .row[data-num="27"] .ball,
+.drawing-table .row[data-num="28"] .ball,
+.drawing-table .row[data-num="32"] .ball,
+.drawing-table .row[data-num="33"] .ball,
+.drawing-table .row[data-num="38"] .ball,
+.drawing-table .row[data-num="39"] .ball,
+.drawing-table .row[data-num="43"] .ball,
+.drawing-table .row[data-num="44"] .ball,
+.drawing-table .row[data-num="49"] .ball {
+    background-color: rgb(164, 231, 162);
+}
+.drawing-table .row .col.ball.win {
+    opacity: 1;
+}
+</style>
+
+<div class="drawing-table" id="drawing-table"></div>
+
+<script>
+    fetch('https://raw.githubusercontent.com/chaskayu/marksix/main/20221025.json', )
+    .then((response) => response.json())
+    .then((data) => {
+        var html = ``;
+        [...Array(49).keys()].forEach((num) => {
+            html += `<div class="row" data-num="${num+1}">
+                <div class="col num">${num+1}</div>
+                ${data.map((draw) => {
+                    return `<div class="col ball" data-id="${draw.id}"></div>`;
+                }).join('')}
+            </div>`;
+        });
+        document.getElementById('drawing-table').innerHTML = html;
+        // fill results
+        data.forEach((draw) => {
+            const nums = draw.no.split('+');
+            nums.forEach((num) => {
+                document.querySelector(`.row[data-num="${num}"] .col.ball[data-id="${draw.id}"]`).classList.add('win');
+            });
+            // document.querySelector(`.row.draw[data-id="${draw.id}"] .col.num[data-num="${draw.sno}"]`).classList.add('win', 'sno');
+        });
+    });
+</script>
+
+
