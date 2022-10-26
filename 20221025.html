@@ -1,0 +1,109 @@
+<style>
+.drawing-table {
+    display: inline-block;
+    font-size: 11px;
+    font-family: "Arial";
+    border-left: 1px solid #eee;
+    border-top: 1px solid #eee;
+}
+.drawing-table .row {
+    display: flex;
+    flex-direction: 'row';
+}
+.drawing-table .row .col {
+    padding: 2px 0;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+.drawing-table .row .col.draw-id {
+    width: 48px;
+}
+.drawing-table .row .col.draw-date {
+    width: 70px;
+}
+.drawing-table .row .col.num {
+    width: 20px;
+    background-color:rgb(237, 160, 160);
+    opacity: 0.4;
+}
+.drawing-table .row .col.num[data-num="3"],
+.drawing-table .row .col.num[data-num="4"],
+.drawing-table .row .col.num[data-num="9"],
+.drawing-table .row .col.num[data-num="10"],
+.drawing-table .row .col.num[data-num="14"],
+.drawing-table .row .col.num[data-num="15"],
+.drawing-table .row .col.num[data-num="20"],
+.drawing-table .row .col.num[data-num="25"],
+.drawing-table .row .col.num[data-num="26"],
+.drawing-table .row .col.num[data-num="31"],
+.drawing-table .row .col.num[data-num="36"],
+.drawing-table .row .col.num[data-num="37"],
+.drawing-table .row .col.num[data-num="41"],
+.drawing-table .row .col.num[data-num="42"],
+.drawing-table .row .col.num[data-num="47"],
+.drawing-table .row .col.num[data-num="48"] {
+    background-color: rgb(144, 193, 238);
+}
+.drawing-table .row .col.num[data-num="5"],
+.drawing-table .row .col.num[data-num="6"],
+.drawing-table .row .col.num[data-num="11"],
+.drawing-table .row .col.num[data-num="16"],
+.drawing-table .row .col.num[data-num="17"],
+.drawing-table .row .col.num[data-num="21"],
+.drawing-table .row .col.num[data-num="22"],
+.drawing-table .row .col.num[data-num="27"],
+.drawing-table .row .col.num[data-num="28"],
+.drawing-table .row .col.num[data-num="32"],
+.drawing-table .row .col.num[data-num="33"],
+.drawing-table .row .col.num[data-num="38"],
+.drawing-table .row .col.num[data-num="39"],
+.drawing-table .row .col.num[data-num="43"],
+.drawing-table .row .col.num[data-num="44"],
+.drawing-table .row .col.num[data-num="49"] {
+    background-color: rgb(164, 231, 162);
+}
+.drawing-table .row .col.num.win {
+    opacity: 1;
+}
+.drawing-table .row .col.num.win.sno {
+    font-weight: bold;
+    color: #f00;
+}
+</style>
+
+<div class="drawing-table" id="drawing-table">
+
+</div>
+
+<script>
+    fetch('https://raw.githubusercontent.com/chaskayu/marksix/main/20221025.json', )
+    .then((response) => response.json())
+    .then((data) => {
+
+        var html = ``;
+        // draw table
+        data.forEach((draw) => {
+            html += `<div class="row draw" data-id="${draw.id}">
+                <div class="col draw-id">${draw.id}</div>
+                <div class="col draw-date">${draw.date}</div>
+                ${[...Array(49).keys()].map((num) => {
+                    return `<div class="col num" data-num="${num+1}">${num+1}</div>`;
+                }).join('')}
+            </div>`;
+        });
+        document.getElementById('drawing-table').innerHTML = html;
+        
+        // fill results
+        data.forEach((draw) => {
+            const nums = draw.no.split('+');
+            nums.forEach((num) => {
+                document.querySelector(`.row.draw[data-id="${draw.id}"] .col.num[data-num="${num}"]`).classList.add('win');
+            });
+            document.querySelector(`.row.draw[data-id="${draw.id}"] .col.num[data-num="${draw.sno}"]`).classList.add('win', 'sno');
+        });
+
+    });
+</script>
+
+
